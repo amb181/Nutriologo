@@ -32,7 +32,6 @@ public class Estadistica extends javax.swing.JFrame {
         this.setTitle("Monitoreo nutricional - Análisis de Componentes Principales");
         setIconImage(new ImageIcon(getClass().getResource("../Imagenes/logo.jpg")).getImage());
         this.getContentPane().setBackground(new Color(179, 217, 255));
-        this.setSize(1300, 900);
         this.setLocationRelativeTo(null);
         jPanel1.setBackground(new Color(255,255,255));
         lbPCA.setVisible(false);
@@ -118,6 +117,9 @@ public class Estadistica extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1600, 900));
+        setMinimumSize(new java.awt.Dimension(200, 200));
+        setPreferredSize(new java.awt.Dimension(700, 700));
 
         btnVer.setText("Ver");
         btnVer.addActionListener(new java.awt.event.ActionListener() {

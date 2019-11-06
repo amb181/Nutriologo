@@ -12,7 +12,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -28,7 +27,6 @@ public class Paciente extends javax.swing.JFrame {
 
     public Paciente() {
         initComponents();
-        this.setSize(1600, 900);
         this.setLocationRelativeTo(null);
         jPanelAgregarPaciente.setVisible(false);
         jPanelModificarPaciente.setVisible(false);
@@ -146,9 +144,9 @@ public class Paciente extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1600, 900));
+        setMinimumSize(new java.awt.Dimension(200, 200));
         setName("frame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(1600, 900));
-        setResizable(false);
+        setPreferredSize(new java.awt.Dimension(700, 700));
 
         jPanelAgregarPaciente.setBackground(new java.awt.Color(255, 255, 255));
         jPanelAgregarPaciente.setAlignmentX(0.0F);

@@ -22,7 +22,6 @@ public class Index extends javax.swing.JFrame {
         setIconImage(new ImageIcon(getClass().getResource("../Imagenes/logo.jpg")).getImage());
         this.setTitle("Monitoreo nutricional");
         this.getContentPane().setBackground(new Color(179, 217, 255));
-        this.setSize(1600, 900);
         this.setLocationRelativeTo(null);
         jPanelIndex.setBackground(new Color(255,255,255)); 
         jPanelIndex.setVisible(true);
@@ -52,6 +51,9 @@ public class Index extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1600, 900));
+        setMinimumSize(new java.awt.Dimension(200, 200));
+        setPreferredSize(new java.awt.Dimension(700, 700));
 
         jPanelIndex.setMaximumSize(new java.awt.Dimension(1600, 900));
         jPanelIndex.setPreferredSize(new java.awt.Dimension(1600, 900));
@@ -66,10 +68,11 @@ public class Index extends javax.swing.JFrame {
         lbLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logo.JPG"))); // NOI18N
         lbLogo.setAlignmentY(0.0F);
+        lbLogo.setAutoscrolls(true);
         lbLogo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lbLogo.setMaximumSize(new java.awt.Dimension(1600, 900));
-        lbLogo.setMinimumSize(new java.awt.Dimension(1600, 900));
-        lbLogo.setPreferredSize(new java.awt.Dimension(1600, 840));
+        lbLogo.setMinimumSize(new java.awt.Dimension(200, 200));
+        lbLogo.setPreferredSize(new java.awt.Dimension(700, 700));
 
         javax.swing.GroupLayout jPanelIndexLayout = new javax.swing.GroupLayout(jPanelIndex);
         jPanelIndex.setLayout(jPanelIndexLayout);
@@ -81,7 +84,7 @@ public class Index extends javax.swing.JFrame {
                 .addContainerGap(1430, Short.MAX_VALUE))
             .addGroup(jPanelIndexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelIndexLayout.createSequentialGroup()
-                    .addComponent(lbLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 1612, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGap(0, 24, Short.MAX_VALUE)))
         );
         jPanelIndexLayout.setVerticalGroup(
@@ -93,7 +96,7 @@ public class Index extends javax.swing.JFrame {
             .addGroup(jPanelIndexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelIndexLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(lbLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE)
+                    .addComponent(lbLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -152,7 +155,7 @@ public class Index extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelIndex, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 913, Short.MAX_VALUE)
+            .addComponent(jPanelIndex, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 913, Short.MAX_VALUE)
         );
 
         pack();
