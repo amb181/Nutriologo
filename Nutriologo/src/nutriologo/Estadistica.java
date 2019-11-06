@@ -1,0 +1,323 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package nutriologo;
+
+import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author aleja
+ */
+public class Estadistica extends javax.swing.JFrame {
+    Connection connection;
+    PreparedStatement preparedStatement;
+    ResultSet resultSet;
+    
+    public Estadistica() {
+        initComponents();
+        this.setTitle("Monitoreo nutricional - Análisis de Componentes Principales");
+        setIconImage(new ImageIcon(getClass().getResource("../Imagenes/logo.jpg")).getImage());
+        this.getContentPane().setBackground(new Color(179, 217, 255));
+        this.setSize(1300, 900);
+        this.setLocationRelativeTo(null);
+        jPanel1.setBackground(new Color(255,255,255));
+        lbPCA.setVisible(false);
+        
+        /*PCA start*/
+        //Ejecutar consulta en MySQL para generar .csv donde se encuentren los datos para el ACP
+        try{
+            connection = Conexion.getConnection();
+            preparedStatement = connection.prepareStatement("SELECT SUM(IF(ID_Gpo=0, Porcion,0)) AS Aceites_y_grasas,\n" +
+                                                        "    SUM(IF(ID_Gpo=1, Porcion,0)) AS Alimentos_de_origen_animal,\n" +
+                                                        "    SUM(IF(ID_Gpo=2, Porcion,0)) AS Azucares,\n" +
+                                                        "    SUM(IF(ID_Gpo=3, Porcion,0)) AS Bebidas,\n" +
+                                                        "    SUM(IF(ID_Gpo=4, Porcion,0)) AS Cereales,\n" +
+                                                        "    SUM(IF(ID_Gpo=5, Porcion,0)) AS Comida_mexicana,\n" +
+                                                        "    SUM(IF(ID_Gpo=6, Porcion,0)) AS Frutas,\n" +
+                                                        "    SUM(IF(ID_Gpo=7, Porcion,0)) AS Leches,\n" +
+                                                        "    SUM(IF(ID_Gpo=8, Porcion,0)) AS Legumbres,\n" +
+                                                        "    SUM(IF(ID_Gpo=9, Porcion,0)) AS Verduras,\n" +
+                                                        "    ID_Paciente\n" +
+                                                        "FROM (\n" +
+                                                        "	SELECT ID_Alimento, A.ID_Gpo\n" +
+                                                        "	FROM Alimento AS A JOIN Gpo_Alimenticio AS G\n" +
+                                                        "	ON A.ID_Gpo = G.ID_Gpo\n" +
+                                                        ") AS uAG JOIN Menu AS M\n" +
+                                                        "ON uAG.ID_Alimento = M.ID_Alimento\n" +
+                                                        "GROUP BY ID_Paciente\n" +
+                                                        "ORDER BY ID_Paciente\n" +
+                                                        "INTO OUTFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/ACP.csv'\n" +
+                                                        "FIELDS TERMINATED BY ','\n" +
+                                                        "LINES TERMINATED BY '\\n';");
+            resultSet = preparedStatement.executeQuery();
+        } catch(SQLException e){
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+        
+        //Ejecutar script de Python desde cmd
+        ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "cd \"C:\\Users\\aleja\\Documents\\UPIITA\\Proyecto_Terminal\\PT_I\" && \"C:\\Users\\aleja\\Anaconda3\\python.exe\" \"ACP_PT.py\"");
+        pb.redirectErrorStream(true);
+        Process p = null;
+        try {
+            p = pb.start();
+        } catch (IOException ex) {
+            Logger.getLogger(Paciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line = null;
+        while (true) {
+            try {
+                line = r.readLine();
+            } catch (IOException ex) {
+                Logger.getLogger(Paciente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        if (line == null) { break; }
+        System.out.println(line);
+        }
+        /*PCA end*/
+        
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        btnVer = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
+        lbPCA = new javax.swing.JLabel();
+        btnCancelar = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        btnVer.setText("Ver");
+        btnVer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerActionPerformed(evt);
+            }
+        });
+
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+
+        lbPCA.setIcon(new javax.swing.ImageIcon("C:\\Users\\aleja\\Documents\\UPIITA\\Proyecto_Terminal\\PT_I\\PCA.jpg")); // NOI18N
+        lbPCA.setAlignmentX(0.5F);
+
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(282, Short.MAX_VALUE)
+                .addComponent(lbPCA)
+                .addGap(278, 278, 278))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(lbPCA)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43))
+        );
+
+        jMenu1.setText("Pacientes");
+        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu1MouseClicked(evt);
+            }
+        });
+
+        jMenuItem1.setText("Agregar");
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Modificar");
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem3.setText("Ver");
+        jMenu1.add(jMenuItem3);
+
+        jMenuItem4.setText("Eliminar");
+        jMenu1.add(jMenuItem4);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Estadística");
+
+        jMenuItem5.setText("Ver");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem5);
+
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Notificaciones");
+        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu3MouseClicked(evt);
+            }
+        });
+
+        jMenuItem6.setText("Enviar");
+        jMenu3.add(jMenuItem6);
+
+        jMenuBar1.add(jMenu3);
+
+        setJMenuBar(jMenuBar1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerActionPerformed
+        // Ver la grafica
+        lbPCA.setVisible(true);
+    }//GEN-LAST:event_btnVerActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // Index
+        this.setVisible(false);
+        Index i0 = new Index();
+        i0.show();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        // Pacientes
+        Paciente p0 = new Paciente();
+        p0.show();
+    }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
+        // Notificaciones
+        this.setVisible(false);
+        Notificaciones n0 = new Notificaciones();
+        n0.show();
+    }//GEN-LAST:event_jMenu3MouseClicked
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // Ver la grafica
+        lbPCA.setVisible(true);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Estadistica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Estadistica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Estadistica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Estadistica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Estadistica().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnSalir;
+    private javax.swing.JButton btnVer;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbPCA;
+    // End of variables declaration//GEN-END:variables
+}

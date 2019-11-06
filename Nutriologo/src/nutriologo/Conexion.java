@@ -8,9 +8,9 @@ import java.sql.DriverManager;
  * @author Alejandro
  */
 public class Conexion {
-    public static final String URL = "jdbc:mysql://localhost:3306/Patron_Alimentario";
+    public static final String URL = "jdbc:mysql://localhost:3306/patron";
     public static final String USERNAME = "root";
-    public static final String PASSWORD = "1234";
+    public static final String PASSWORD = "";
     
     public static Connection getConnection(){
         Connection connection = null;
