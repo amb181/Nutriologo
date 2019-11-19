@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author aleja
+ * @author ale
  */
 public class Index extends javax.swing.JFrame {
 
@@ -19,9 +19,11 @@ public class Index extends javax.swing.JFrame {
      */
     public Index() {
         initComponents();
-        setIconImage(new ImageIcon(getClass().getResource("../Imagenes/logo.jpg")).getImage());
+        ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("imagenes/icon.ico"));
+        this.setIconImage(icon.getImage());
         this.setTitle("Monitoreo nutricional");
         this.getContentPane().setBackground(new Color(179, 217, 255));
+        this.setSize(1300, 700);
         this.setLocationRelativeTo(null);
         jPanelIndex.setBackground(new Color(255,255,255)); 
         jPanelIndex.setVisible(true);
@@ -53,10 +55,9 @@ public class Index extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1600, 900));
         setMinimumSize(new java.awt.Dimension(200, 200));
-        setPreferredSize(new java.awt.Dimension(700, 700));
 
         jPanelIndex.setMaximumSize(new java.awt.Dimension(1600, 900));
-        jPanelIndex.setPreferredSize(new java.awt.Dimension(1600, 900));
+        jPanelIndex.setPreferredSize(new java.awt.Dimension(1300, 700));
 
         btnSalirIndex.setText("Salir");
         btnSalirIndex.addActionListener(new java.awt.event.ActionListener() {
@@ -79,25 +80,22 @@ public class Index extends javax.swing.JFrame {
         jPanelIndexLayout.setHorizontalGroup(
             jPanelIndexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelIndexLayout.createSequentialGroup()
-                .addGap(62, 62, 62)
+                .addGap(54, 54, 54)
                 .addComponent(btnSalirIndex, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1430, Short.MAX_VALUE))
+                .addContainerGap(1126, Short.MAX_VALUE))
             .addGroup(jPanelIndexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanelIndexLayout.createSequentialGroup()
-                    .addComponent(lbLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(0, 24, Short.MAX_VALUE)))
+                .addComponent(lbLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 988, Short.MAX_VALUE))
         );
         jPanelIndexLayout.setVerticalGroup(
             jPanelIndexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelIndexLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(591, Short.MAX_VALUE)
                 .addComponent(btnSalirIndex, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(129, 129, 129))
+                .addGap(43, 43, 43))
             .addGroup(jPanelIndexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelIndexLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(lbLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
+                    .addComponent(lbLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 661, Short.MAX_VALUE)))
         );
 
         jMenu1.setText("Pacientes");
@@ -151,11 +149,11 @@ public class Index extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelIndex, javax.swing.GroupLayout.DEFAULT_SIZE, 1612, Short.MAX_VALUE)
+            .addComponent(jPanelIndex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelIndex, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 913, Short.MAX_VALUE)
+            .addComponent(jPanelIndex, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE)
         );
 
         pack();

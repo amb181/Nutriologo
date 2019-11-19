@@ -8,7 +8,8 @@ import java.sql.DriverManager;
  * @author Alejandro
  */
 public class Conexion {
-    public static final String URL = "jdbc:mysql://localhost:3306/patron";
+    public static final String URL = "jdbc:mysql://localhost:3306/"
+            + "pruebas?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     public static final String USERNAME = "root";
     public static final String PASSWORD = "";
     
@@ -16,7 +17,7 @@ public class Conexion {
         Connection connection = null;
         
         try{
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch(Exception e){
             System.out.println(e);

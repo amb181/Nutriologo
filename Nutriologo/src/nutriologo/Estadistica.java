@@ -29,23 +29,26 @@ public class Estadistica extends javax.swing.JFrame {
     
     public Estadistica() {
         initComponents();
-        this.setTitle("Monitoreo nutricional - Análisis de Componentes Principales");
-        setIconImage(new ImageIcon(getClass().getResource("../Imagenes/logo.jpg")).getImage());
+        this.setTitle("Monitoreo nutricional - Análisis estadístico");
+        ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("imagenes/icon.ico"));
+        this.setIconImage(icon.getImage());
+        this.setSize(1300, 700);
         this.getContentPane().setBackground(new Color(179, 217, 255));
         this.setLocationRelativeTo(null);
         jPanel1.setBackground(new Color(255,255,255));
-        lbPCA.setVisible(false);
+        lbACP.setVisible(false);
+        lbCP.setVisible(false);
         
         /*PCA start*/
         //Ejecutar consulta en MySQL para generar .csv donde se encuentren los datos para el ACP
         try{
             connection = Conexion.getConnection();
-            preparedStatement = connection.prepareStatement("SELECT SUM(IF(ID_Gpo=0, Porcion,0)) AS Aceites_y_grasas,\n" +
-                                                        "    SUM(IF(ID_Gpo=1, Porcion,0)) AS Alimentos_de_origen_animal,\n" +
+            preparedStatement = connection.prepareStatement("SELECT SUM(IF(ID_Gpo=0, Porcion,0)) AS Ay_G,\n" +
+                                                        "    SUM(IF(ID_Gpo=1, Porcion,0)) AS AorigenA,\n" +
                                                         "    SUM(IF(ID_Gpo=2, Porcion,0)) AS Azucares,\n" +
                                                         "    SUM(IF(ID_Gpo=3, Porcion,0)) AS Bebidas,\n" +
                                                         "    SUM(IF(ID_Gpo=4, Porcion,0)) AS Cereales,\n" +
-                                                        "    SUM(IF(ID_Gpo=5, Porcion,0)) AS Comida_mexicana,\n" +
+                                                        "    SUM(IF(ID_Gpo=5, Porcion,0)) AS Comida_mex,\n" +
                                                         "    SUM(IF(ID_Gpo=6, Porcion,0)) AS Frutas,\n" +
                                                         "    SUM(IF(ID_Gpo=7, Porcion,0)) AS Leches,\n" +
                                                         "    SUM(IF(ID_Gpo=8, Porcion,0)) AS Legumbres,\n" +
@@ -68,7 +71,7 @@ public class Estadistica extends javax.swing.JFrame {
         }
         
         //Ejecutar script de Python desde cmd
-        ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "cd \"C:\\Users\\aleja\\Documents\\UPIITA\\Proyecto_Terminal\\PT_I\" && \"C:\\Users\\aleja\\Anaconda3\\python.exe\" \"ACP_PT.py\"");
+        ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "cd \"C:\\Users\\aleja\\Documents\\UPIITA\\Proyecto_Terminal\\PT_II\" && \"C:\\Users\\aleja\\Anaconda3\\python.exe\" \"ACP_PT.py\"");
         pb.redirectErrorStream(true);
         Process p = null;
         try {
@@ -101,10 +104,15 @@ public class Estadistica extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        lbCP = new javax.swing.JLabel();
         btnVer = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
-        lbPCA = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        lbACP = new javax.swing.JLabel();
+        btnVer1 = new javax.swing.JButton();
+        btnSalir1 = new javax.swing.JButton();
+        btnCancelar1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -113,6 +121,7 @@ public class Estadistica extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
 
@@ -120,6 +129,8 @@ public class Estadistica extends javax.swing.JFrame {
         setMaximumSize(new java.awt.Dimension(1600, 900));
         setMinimumSize(new java.awt.Dimension(200, 200));
         setPreferredSize(new java.awt.Dimension(700, 700));
+
+        lbCP.setIcon(new javax.swing.ImageIcon("C:\\Users\\aleja\\Documents\\UPIITA\\Proyecto_Terminal\\PT_II\\CP.jpg")); // NOI18N
 
         btnVer.setText("Ver");
         btnVer.addActionListener(new java.awt.event.ActionListener() {
@@ -135,9 +146,6 @@ public class Estadistica extends javax.swing.JFrame {
             }
         });
 
-        lbPCA.setIcon(new javax.swing.ImageIcon("C:\\Users\\aleja\\Documents\\UPIITA\\Proyecto_Terminal\\PT_I\\PCA.jpg")); // NOI18N
-        lbPCA.setAlignmentX(0.5F);
-
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,29 +158,83 @@ public class Estadistica extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(32, 32, 32)
                 .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(282, Short.MAX_VALUE)
-                .addComponent(lbPCA)
-                .addGap(278, 278, 278))
+                .addGap(79, 79, 79))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(262, 262, 262)
+                .addComponent(lbCP)
+                .addContainerGap(413, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addComponent(lbPCA)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
+                .addContainerGap(59, Short.MAX_VALUE)
+                .addComponent(lbCP, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnVer, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43))
+        );
+
+        lbACP.setIcon(new javax.swing.ImageIcon("C:\\Users\\aleja\\Documents\\UPIITA\\Proyecto_Terminal\\PT_II\\PCA.jpg")); // NOI18N
+        lbACP.setAlignmentX(0.5F);
+
+        btnVer1.setText("Ver");
+        btnVer1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVer1ActionPerformed(evt);
+            }
+        });
+
+        btnSalir1.setText("Salir");
+        btnSalir1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalir1ActionPerformed(evt);
+            }
+        });
+
+        btnCancelar1.setText("Cancelar");
+        btnCancelar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelar1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(56, 56, 56)
+                .addComponent(btnSalir1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnCancelar1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addComponent(btnVer1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(122, 122, 122))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(225, 225, 225)
+                .addComponent(lbACP)
+                .addContainerGap(450, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(78, 78, 78)
+                .addComponent(lbACP)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalir1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelar1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVer1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(53, 53, 53))
         );
 
         jMenu1.setText("Pacientes");
@@ -198,13 +260,21 @@ public class Estadistica extends javax.swing.JFrame {
 
         jMenu2.setText("Estadística");
 
-        jMenuItem5.setText("Ver");
+        jMenuItem5.setText("Ver aportación de grupos alimenticios");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem5ActionPerformed(evt);
             }
         });
         jMenu2.add(jMenuItem5);
+
+        jMenuItem7.setText("Ver ACP");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem7);
 
         jMenuBar1.add(jMenu2);
 
@@ -227,18 +297,25 @@ public class Estadistica extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerActionPerformed
-        // Ver la grafica
-        lbPCA.setVisible(true);
+        // Ver la grafica de barras de los componentes
+        lbACP.setVisible(false);
+        lbCP.setVisible(true);
     }//GEN-LAST:event_btnVerActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
@@ -266,9 +343,32 @@ public class Estadistica extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu3MouseClicked
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        // Ver la grafica
-        lbPCA.setVisible(true);
+        // Ver la grafica de barras de CPs
+        jPanel1.setVisible(true);
+        jPanel2.setVisible(false);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // Ver ACP
+        jPanel1.setVisible(false);
+        jPanel2.setVisible(true);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void btnVer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVer1ActionPerformed
+        lbACP.setVisible(true);
+        lbCP.setVisible(false);
+    }//GEN-LAST:event_btnVer1ActionPerformed
+
+    private void btnSalir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir1ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnSalir1ActionPerformed
+
+    private void btnCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelar1ActionPerformed
+        // Index
+        this.setVisible(false);
+        Index i0 = new Index();
+        i0.show();
+    }//GEN-LAST:event_btnCancelar1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -307,8 +407,11 @@ public class Estadistica extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnCancelar1;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JButton btnSalir1;
     private javax.swing.JButton btnVer;
+    private javax.swing.JButton btnVer1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -319,7 +422,10 @@ public class Estadistica extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lbPCA;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lbACP;
+    private javax.swing.JLabel lbCP;
     // End of variables declaration//GEN-END:variables
 }
