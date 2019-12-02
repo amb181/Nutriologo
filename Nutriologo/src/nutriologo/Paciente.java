@@ -5,12 +5,15 @@
  */
 package nutriologo;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -124,12 +127,12 @@ public class Paciente extends javax.swing.JFrame {
         lbID = new javax.swing.JLabel();
         txtID = new javax.swing.JTextField();
         jPanelVerPacientes = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         lbInstruccionesVer = new javax.swing.JLabel();
         lbTituloVer = new javax.swing.JLabel();
         btnSalirVerPacientes = new javax.swing.JButton();
         btnCancelarV = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jPanelEliminarPaciente = new javax.swing.JPanel();
         lbTituloEliminar = new javax.swing.JLabel();
         lbInstruccionesEliminar = new javax.swing.JLabel();
@@ -433,6 +436,11 @@ public class Paciente extends javax.swing.JFrame {
         });
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnSalirM.setText("Salir");
         btnSalirM.addActionListener(new java.awt.event.ActionListener() {
@@ -630,33 +638,6 @@ public class Paciente extends javax.swing.JFrame {
 
         jPanelVerPacientes.setPreferredSize(new java.awt.Dimension(1300, 700));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "Nombre", "Apellido P", "Apellido M", "Sexo", "Altura", "Peso", "Edad", "IMC", "ICC", "TAS", "TAD", "Usuario", "Contrasena"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.setPreferredSize(new java.awt.Dimension(700, 64));
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
-
         lbInstruccionesVer.setText("En la siguiente tabla puede ver los pacientes registrados en la base de datos.");
 
         lbTituloVer.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -676,23 +657,55 @@ public class Paciente extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nombre", "Apellido P", "Apellido M", "Sexo", "Altura", "Peso", "Edad", "IMC", "ICC", "TAS", "TAD", "Usuario", "Contrasena"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, true, true, true, true, true, true, true, true, true, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.setColumnSelectionAllowed(true);
+        jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jTable1);
+        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+
         javax.swing.GroupLayout jPanelVerPacientesLayout = new javax.swing.GroupLayout(jPanelVerPacientes);
         jPanelVerPacientes.setLayout(jPanelVerPacientesLayout);
         jPanelVerPacientesLayout.setHorizontalGroup(
             jPanelVerPacientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelVerPacientesLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSalirVerPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelVerPacientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelVerPacientesLayout.createSequentialGroup()
-                        .addComponent(lbTituloVer)
-                        .addGap(18, 18, 18)
-                        .addComponent(lbInstruccionesVer, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1000, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addComponent(btnCancelarV, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addContainerGap(353, Short.MAX_VALUE)
+                .addComponent(lbTituloVer)
+                .addGap(18, 18, 18)
+                .addComponent(lbInstruccionesVer, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(353, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelVerPacientesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelVerPacientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelVerPacientesLayout.createSequentialGroup()
+                        .addComponent(btnSalirVerPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCancelarV, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(33, 33, 33))
         );
         jPanelVerPacientesLayout.setVerticalGroup(
             jPanelVerPacientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -700,16 +713,13 @@ public class Paciente extends javax.swing.JFrame {
                 .addGroup(jPanelVerPacientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbInstruccionesVer, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbTituloVer, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanelVerPacientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelVerPacientesLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(103, 103, 103))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelVerPacientesLayout.createSequentialGroup()
-                        .addGroup(jPanelVerPacientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnSalirVerPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCancelarV, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(79, 79, 79))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addGroup(jPanelVerPacientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalirVerPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelarV, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         jPanelEliminarPaciente.setPreferredSize(new java.awt.Dimension(1300, 700));
@@ -907,25 +917,29 @@ public class Paciente extends javax.swing.JFrame {
         //Ver pacientes
         jPanelVerPacientes.setVisible(true);
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        while(modelo.getRowCount()>0)modelo.removeRow(0);
-        try{
+        while (modelo.getRowCount() > 0) {
+            modelo.removeRow(0);
+        }
+        try {
             connection = Conexion.getConnection();
-            preparedStatement = connection.prepareStatement("SELECT * FROM paciente ORDER BY Apellido_P;");
+            preparedStatement = connection.prepareStatement(
+                    "SELECT *\n"
+                   + "FROM paciente");
             resultSet = preparedStatement.executeQuery();
             rsm = resultSet.getMetaData();
             ArrayList<Object[]> data = new ArrayList<>();
-            while(resultSet.next()){
-                Object [] rows = new Object[rsm.getColumnCount()];
-                for(int i=0; i < rows.length; i++){
-                    rows[i] = resultSet.getObject(i+1);
+            while (resultSet.next()) {
+                Object[] rows = new Object[rsm.getColumnCount()];
+                for (int i = 0; i < rows.length; i++) {
+                    rows[i] = resultSet.getObject(i + 1);
                 }
                 data.add(rows);
             }
-            dtm = (DefaultTableModel)this.jTable1.getModel();
-            for(int i=0; i < data.size(); i++){
+            dtm = (DefaultTableModel) this.jTable1.getModel();
+            for (int i = 0; i < data.size(); i++) {
                 dtm.addRow(data.get(i));
             }
-        } catch(SQLException e){
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
@@ -941,7 +955,12 @@ public class Paciente extends javax.swing.JFrame {
     private void btnCancelarAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarAActionPerformed
         //Index
         this.setVisible(false);
-        Index i0 = new Index();
+        Index i0 = null;
+        try {
+            i0 = new Index();
+        } catch (IOException ex) {
+            Logger.getLogger(Paciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
         i0.show();
     }//GEN-LAST:event_btnCancelarAActionPerformed
 
@@ -951,25 +970,33 @@ public class Paciente extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         //Botón BUSCAR (Modificar y Eliminar)
-        String tipo = null;
-        if(cmbSexo.getSelectedIndex()== 1)
-        tipo = "Masculino";
-        else
-        tipo = "Femenino";
         try{
             connection = Conexion.getConnection();
-            preparedStatement = connection.prepareStatement("SELECT Nombre, Apellido_P, Apellido_M, Altura, Peso, Edad," +
-                "TAS, TAD, Usuario" +
+            preparedStatement = connection.prepareStatement("SELECT Nombre, Apellido_P, Apellido_M, Altura, Peso, Edad,\n" +
+                "TAS, TAD, Usuario, Contrasena\n" +
                 "FROM paciente WHERE ID_Paciente = ?");
-            int id = Integer.parseInt(txtID.getText());
-            preparedStatement.setInt(1, id);
-            preparedStatement.setString(2, txtNombre.getText());
-            preparedStatement.setString(3, txtAP.getText());
-            preparedStatement.setString(4, txtAM.getText());
+            preparedStatement.setString(1, txtID.getText()) ;
+       
             resultSet = preparedStatement.executeQuery();
+            if(resultSet.next())
+            {
+                txtNombre1.setText(resultSet.getString("Nombre"));
+                txtAP1.setText(resultSet.getString("Apellido_P"));
+                txtAM1.setText(resultSet.getString("Apellido_M"));
+                txtAltura1.setText(resultSet.getString("Altura"));
+                txtPeso1.setText(resultSet.getString("Peso"));
+                txtEdad1.setText(resultSet.getString("Edad"));
+                txtTAS1.setText(resultSet.getString("TAS"));
+                txtTAD1.setText(resultSet.getString("TAD"));
+                txtUsuario1.setText(resultSet.getString("Usuario"));
+                pswContrasena1.setText(resultSet.getString("Contrasena"));
+            }
+            
             rsm = resultSet.getMetaData();
+            
             connection.close();
-        } catch(Exception ex){
+           
+        } catch(SQLException ex){
             System.out.println(ex);
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -980,7 +1007,12 @@ public class Paciente extends javax.swing.JFrame {
 
     private void btnCancelarVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarVActionPerformed
         this.setVisible(false);
-        Index i0 = new Index();
+        Index i0 = null;
+        try {
+            i0 = new Index();
+        } catch (IOException ex) {
+            Logger.getLogger(Paciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
         i0.show();
     }//GEN-LAST:event_btnCancelarVActionPerformed
 
@@ -991,7 +1023,12 @@ public class Paciente extends javax.swing.JFrame {
     private void btnCancelarMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarMActionPerformed
         // Index
         this.setVisible(false);
-        Index i0 = new Index();
+        Index i0 = null;
+        try {
+            i0 = new Index();
+        } catch (IOException ex) {
+            Logger.getLogger(Paciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
         i0.show();
     }//GEN-LAST:event_btnCancelarMActionPerformed
 
@@ -1056,7 +1093,12 @@ public class Paciente extends javax.swing.JFrame {
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         // Estadistica
         this.setVisible(false);
-        Estadistica e0 = new Estadistica();
+        Estadistica e0 = null;
+        try {
+            e0 = new Estadistica();
+        } catch (IOException ex) {
+            Logger.getLogger(Paciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
         e0.show();
     }//GEN-LAST:event_jMenu2MouseClicked
 
@@ -1067,16 +1109,14 @@ public class Paciente extends javax.swing.JFrame {
     private void btnCancelarEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarEActionPerformed
         // Index
         this.setVisible(false);
-        Index i0 = new Index();
+        Index i0 = null;
+        try {
+            i0 = new Index();
+        } catch (IOException ex) {
+            Logger.getLogger(Paciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
         i0.show();
     }//GEN-LAST:event_btnCancelarEActionPerformed
-
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
-        int selectedRowIndex = jTable1.getSelectedRow();
-        txtID.setText(model.getValueAt(selectedRowIndex, 0).toString());
-    }//GEN-LAST:event_jTable1MouseClicked
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // Eliminar paciente
@@ -1101,6 +1141,57 @@ public class Paciente extends javax.swing.JFrame {
             System.out.println(ex);
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        //Actualizar paciente 
+        String  tipo = null;
+        if(cmbSexo.getSelectedIndex()== 1)
+            tipo = "Masculino";
+        else
+            tipo = "Femenino";
+        try{
+            connection = Conexion.getConnection();
+            preparedStatement = connection.prepareStatement(
+            "UPDATE paciente SET Nombre = ?, Apellido_P = ?, Apellido_M = ?, Sexo = ?, Altura = ?,"
+          + " Peso = ?, Edad = ?, IMC = ?, ICC = ?, TAS = ?, TAD = ?, Usuario = ?, Contrasena = ?\n "
+          + "WHERE ID_Paciente = ?;");
+            
+            preparedStatement.setString(1, txtNombre1.getText());
+            preparedStatement.setString(2, txtAP1.getText());
+            preparedStatement.setString(3, txtAM1.getText());
+            preparedStatement.setString(4, tipo);
+            preparedStatement.setString(5, txtAltura1.getText());
+            preparedStatement.setString(6, txtPeso1.getText());
+            float IMC = 0;  //Peso[kg]/(Altura[m])^2
+            float a = Float.parseFloat(txtAltura1.getText());
+            float p = Float.parseFloat(txtPeso1.getText());
+            IMC = p/((a/100)*(a/100));
+            preparedStatement.setString(7, txtEdad1.getText());
+            preparedStatement.setFloat(8, IMC);
+            float ICC = 0;  //Peso[kg]/(Altura[m])^2
+            float ci = Float.parseFloat(txtCintura1.getText());
+            float ca = Float.parseFloat(txtCadera1.getText());
+            ICC = ci/ca;
+            preparedStatement.setFloat(9, ICC);
+            preparedStatement.setString(10, txtTAS1.getText());
+            preparedStatement.setString(11, txtTAD1.getText());
+            preparedStatement.setString(12, txtUsuario1.getText());
+            preparedStatement.setString(13, pswContrasena1.getText());
+            preparedStatement.setString(14, txtID.getText());
+            int res = preparedStatement.executeUpdate();
+            if (res > 0){
+                this.setVisible(false);
+                JOptionPane.showMessageDialog(null, "Datos actualizados.");
+                Index i0 = new Index();
+                i0.show();
+            } else{
+                JOptionPane.showMessageDialog(null, "Error al actualizar los datos.");
+            }
+            connection.close();
+        } catch(Exception ex){
+            System.out.println(ex);
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
      * @param args the command line arguments

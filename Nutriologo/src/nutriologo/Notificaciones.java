@@ -6,9 +6,12 @@
 package nutriologo;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -273,7 +276,12 @@ public class Notificaciones extends javax.swing.JFrame {
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         this.setVisible(false);
-        Estadistica e0 = new Estadistica();
+        Estadistica e0 = null;
+        try {
+            e0 = new Estadistica();
+        } catch (IOException ex) {
+            Logger.getLogger(Notificaciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
         e0.show();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
@@ -293,7 +301,12 @@ public class Notificaciones extends javax.swing.JFrame {
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // Index
         this.setVisible(false);
-        Index i = new Index();
+        Index i = null;
+        try {
+            i = new Index();
+        } catch (IOException ex) {
+            Logger.getLogger(Notificaciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
         i.show();
     }//GEN-LAST:event_btnCancelarActionPerformed
 

@@ -7,6 +7,7 @@ package nutriologo;
 
 import java.awt.Color;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
@@ -27,7 +28,7 @@ public class Estadistica extends javax.swing.JFrame {
     PreparedStatement preparedStatement;
     ResultSet resultSet;
     
-    public Estadistica() {
+    public Estadistica() throws IOException {
         initComponents();
         this.setTitle("Monitoreo nutricional - Análisis estadístico");
         ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("imagenes/icon.ico"));
@@ -43,35 +44,40 @@ public class Estadistica extends javax.swing.JFrame {
         //Ejecutar consulta en MySQL para generar .csv donde se encuentren los datos para el ACP
         try{
             connection = Conexion.getConnection();
-            preparedStatement = connection.prepareStatement("SELECT SUM(IF(ID_Gpo=0, Porcion,0)) AS Ay_G,\n" +
-                                                        "    SUM(IF(ID_Gpo=1, Porcion,0)) AS AorigenA,\n" +
-                                                        "    SUM(IF(ID_Gpo=2, Porcion,0)) AS Azucares,\n" +
-                                                        "    SUM(IF(ID_Gpo=3, Porcion,0)) AS Bebidas,\n" +
-                                                        "    SUM(IF(ID_Gpo=4, Porcion,0)) AS Cereales,\n" +
-                                                        "    SUM(IF(ID_Gpo=5, Porcion,0)) AS Comida_mex,\n" +
-                                                        "    SUM(IF(ID_Gpo=6, Porcion,0)) AS Frutas,\n" +
-                                                        "    SUM(IF(ID_Gpo=7, Porcion,0)) AS Leches,\n" +
-                                                        "    SUM(IF(ID_Gpo=8, Porcion,0)) AS Legumbres,\n" +
-                                                        "    SUM(IF(ID_Gpo=9, Porcion,0)) AS Verduras,\n" +
-                                                        "    ID_Paciente\n" +
-                                                        "FROM (\n" +
-                                                        "	SELECT ID_Alimento, A.ID_Gpo\n" +
-                                                        "	FROM Alimento AS A JOIN Gpo_Alimenticio AS G\n" +
-                                                        "	ON A.ID_Gpo = G.ID_Gpo\n" +
-                                                        ") AS uAG JOIN Menu AS M\n" +
-                                                        "ON uAG.ID_Alimento = M.ID_Alimento\n" +
-                                                        "GROUP BY ID_Paciente\n" +
-                                                        "ORDER BY ID_Paciente\n" +
-                                                        "INTO OUTFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/ACP.csv'\n" +
-                                                        "FIELDS TERMINATED BY ','\n" +
-                                                        "LINES TERMINATED BY '\\n';");
+            preparedStatement = connection.prepareStatement(
+                    "SELECT 'AyG','AoA','Azucares','Bebidas','Cereales','Comida mex','Frutas',"
+                    + "'Leches','Legumbres','Verduras','ID'"
+                    + "UNION ALL\n" 
+                    + "SELECT * FROM (SELECT SUM(IF(ID_Gpo=0, Porcion,0)) AS Ay_G,\n" +
+                      "    SUM(IF(ID_Gpo=1, Porcion,0)) AS AorigenA,\n" +
+                      "    SUM(IF(ID_Gpo=2, Porcion,0)) AS Azucares,\n" +
+                      "    SUM(IF(ID_Gpo=3, Porcion,0)) AS Bebidas,\n" +
+                      "    SUM(IF(ID_Gpo=4, Porcion,0)) AS Cereales,\n" +
+                      "    SUM(IF(ID_Gpo=5, Porcion,0)) AS Comida_mex,\n" +
+                      "    SUM(IF(ID_Gpo=6, Porcion,0)) AS Frutas,\n" +
+                      "    SUM(IF(ID_Gpo=7, Porcion,0)) AS Leches,\n" +
+                      "    SUM(IF(ID_Gpo=8, Porcion,0)) AS Legumbres,\n" +
+                      "    SUM(IF(ID_Gpo=9, Porcion,0)) AS Verduras,\n" +
+                      "    ID_Paciente\n" +
+                      "FROM (\n" +
+                      "	SELECT ID_Alimento, A.ID_Gpo\n" +
+                      "	FROM Alimento AS A JOIN Gpo_Alimenticio AS G\n" +
+                      "	ON A.ID_Gpo = G.ID_Gpo\n" +
+                      ") AS uAG JOIN Menu AS M\n" +
+                      "ON uAG.ID_Alimento = M.ID_Alimento\n" +
+                      "GROUP BY ID_Paciente\n" +
+                      "ORDER BY ID_Paciente) AS Resultado\n" +
+                      "INTO OUTFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/ACP.csv'\n" +
+                      "FIELDS TERMINATED BY ','\n" +
+                      "LINES TERMINATED BY '\\n';");
             resultSet = preparedStatement.executeQuery();
         } catch(SQLException e){
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
         
         //Ejecutar script de Python desde cmd
-        ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "cd \"C:\\Users\\aleja\\Documents\\UPIITA\\Proyecto_Terminal\\PT_II\" && \"C:\\Users\\aleja\\Anaconda3\\python.exe\" \"ACP_PT.py\"");
+        //ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "cd \"C:\\Users\\Rodrigo\\Documents\\10mo_semestre\\PTII\" && \"C:\\Users\\Rodrigo\\AppData\\Local\\Programs\\Python\\Python37\\python.exe\" \"ACP_PT.py\"");
+        ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "cd \"C:\\Users\\aleja\\Documentos\\UPIITA\\Proyecto_Terminal\\PTII\" && \"C:\\Users\\aleja\\Anaconda3\\python.exe\" \"ACP_PT.py\"");
         pb.redirectErrorStream(true);
         Process p = null;
         try {
@@ -298,9 +304,7 @@ public class Estadistica extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -325,7 +329,12 @@ public class Estadistica extends javax.swing.JFrame {
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // Index
         this.setVisible(false);
-        Index i0 = new Index();
+        Index i0 = null;
+        try {
+            i0 = new Index();
+        } catch (IOException ex) {
+            Logger.getLogger(Estadistica.class.getName()).log(Level.SEVERE, null, ex);
+        }
         i0.show();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -366,7 +375,12 @@ public class Estadistica extends javax.swing.JFrame {
     private void btnCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelar1ActionPerformed
         // Index
         this.setVisible(false);
-        Index i0 = new Index();
+        Index i0 = null;
+        try {
+            i0 = new Index();
+        } catch (IOException ex) {
+            Logger.getLogger(Estadistica.class.getName()).log(Level.SEVERE, null, ex);
+        }
         i0.show();
     }//GEN-LAST:event_btnCancelar1ActionPerformed
 
@@ -400,7 +414,11 @@ public class Estadistica extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Estadistica().setVisible(true);
+                try {
+                    new Estadistica().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Estadistica.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

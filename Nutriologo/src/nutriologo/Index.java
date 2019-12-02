@@ -6,6 +6,13 @@
 package nutriologo;
 
 import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 /**
@@ -17,7 +24,7 @@ public class Index extends javax.swing.JFrame {
     /**
      * Creates new form Index
      */
-    public Index() {
+    public Index() throws IOException {
         initComponents();
         ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("imagenes/icon.ico"));
         this.setIconImage(icon.getImage());
@@ -27,6 +34,29 @@ public class Index extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         jPanelIndex.setBackground(new Color(255,255,255)); 
         jPanelIndex.setVisible(true);
+        
+        //Iniciar Apache desde cmd
+        ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "C:\\xampp\\apache\\bin\\httpd.exe");
+        pb.redirectErrorStream(true);
+        Process p = null;
+        try {
+            p = pb.start();
+        } catch (IOException ex) {
+            Logger.getLogger(Paciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //Iniciar MySQL desde cmd
+        ProcessBuilder pb1 = new ProcessBuilder("cmd.exe", "/c", "C:\\xampp\\mysql\\bin\\mysqld.exe");
+        pb1.redirectErrorStream(true);
+        Process p1 = null;
+        try {
+            p1 = pb1.start();
+        } catch (IOException ex1) {
+            Logger.getLogger(Paciente.class.getName()).log(Level.SEVERE, null, ex1);
+        }
+                
+        /*Revisa si ACP_PT.py existe*/
+        Files.deleteIfExists(Paths.get("C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\ACP.csv")); 
     }
 
     /**
@@ -173,7 +203,12 @@ public class Index extends javax.swing.JFrame {
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         // Estadistica
         this.setVisible(false);
-        Estadistica e0 = new Estadistica();
+        Estadistica e0 = null;
+        try {
+            e0 = new Estadistica();
+        } catch (IOException ex) {
+            Logger.getLogger(Index.class.getName()).log(Level.SEVERE, null, ex);
+        }
         e0.show();
     }//GEN-LAST:event_jMenu2MouseClicked
 
@@ -214,7 +249,11 @@ public class Index extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Index().setVisible(true);
+                try {
+                    new Index().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Index.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
